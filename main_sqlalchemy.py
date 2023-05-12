@@ -2,7 +2,7 @@ import os
 
 
 from dotenv import load_dotenv
-from sqlalchemy import String
+from sqlalchemy import String, select
 from sqlalchemy.orm import Session, Mapped
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import mapped_column
@@ -37,5 +37,16 @@ Base.metadata.create_all(engine)
 
 # Insert data and issue queries
 with Session(engine) as session:
-    pass
+    # insert restaurant
+    restaurant = Restaurant(
+      id='123',
+      name="The Noodle bar"
+    )
+    session.add(restaurant)
+    session.commit()
+
+    query = select(Restaurant).where(Restaurant.name == "The Noode bar")
+    restaurants = session.execute(query).scalars().all()
+    print(restaurants)
+    
 
